@@ -9,10 +9,19 @@ import java.util.Map;
 @SuppressWarnings({"ResultOfMethodCallIgnored", "resource"})
 public class BCTYaml {
 
+    private static String directory = System.getProperty("user.dir");
+    public static String getDirectory() {
+        return directory;
+    }
+
+    public static void setDirectory(String directory) {
+        BCTYaml.directory = directory;
+    }
+
     public static YamlFile getYamlFile (String fileName) {
         if(!fileName.contains(".")) fileName = fileName + ".yml";
 
-        File file = new File(System.getProperty("user.dir"), fileName);
+        File file = new File(getDirectory(), fileName);
 
         // Create files if they do not exist already
         if(!file.getParentFile().exists()) file.getParentFile().mkdirs();
@@ -140,7 +149,7 @@ public class BCTYaml {
     public static YamlFile getYamlFile (String fileName, boolean copyResource) {
         if(!fileName.contains(".")) fileName = fileName + ".yml";
 
-        File file = new File(System.getProperty("user.dir"), fileName);
+        File file = new File(getDirectory(), fileName);
 
         // Create files if they do not exist already
         if(!file.getParentFile().exists()) file.getParentFile().mkdirs();

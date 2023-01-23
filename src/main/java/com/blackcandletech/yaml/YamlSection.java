@@ -31,34 +31,46 @@ public class YamlSection {
         return rawData;
     }
 
+    public Object get(String path) {
+        if(path.contains("."))
+        {
+            String[] pathArray = path.split("\\.");
+            String section = pathArray[0];
+            String newPath = String.join(".", Arrays.copyOfRange(pathArray, 1, pathArray.length));
+            return getYamlSection(section).get(newPath);
+        }
+
+        return rawData.get(path);
+    }
+
     public String getString(String path)
     {
-        return (String) rawData.get(path);
+        return (String) get(path);
     }
 
     public int getInteger(String path)
     {
-        return (int) rawData.get(path);
+        return (int) get(path);
     }
 
     public boolean getBoolean(String path)
     {
-        return (boolean) rawData.get(path);
+        return (boolean) get(path);
     }
 
     public float getFloat(String path)
     {
-        return (float) rawData.get(path);
+        return (float) get(path);
     }
 
     public double getDouble(String path)
     {
-        return (double) rawData.get(path);
+        return (double) get(path);
     }
 
     public ArrayList<String> getStringList(String path)
     {
-        return (ArrayList<String>) rawData.get(path);
+        return (ArrayList<String>) get(path);
     }
 
     public YamlSection getYamlSection(String path)
