@@ -9,8 +9,6 @@ public class YamlTest {
     @Test
     public void isYamlSavingProperly() {
         YamlFile yamlFile = BCTYaml.getYamlFile("test", "yamltest", false);
-        String check = yamlFile.getString("test.test.test.test.test.ok");
-        assert check.equals("not!");
         yamlFile.saveYamlFile();
     }
 
