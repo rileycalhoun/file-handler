@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.blackcandletech'
-version 'master-SNAPSHOT'
+version '1.1.2'
 
 repositories {
     mavenCentral()
@@ -21,12 +21,18 @@ compileJava {
     targetCompatibility("17")
 }
 
+def jarFile = layout.buildDirectory.file("libs/yaml-${this.version}-all.jar");
+def jarArtifact = artifacts.add('archives', jarFile.get().asFile) {
+    type 'jar'
+}
+
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId = 'com.blackcandletech'
+            groupId = 'com.github.black-candle-technologies'
             artifactId = 'yaml'
             version = this.version
+            artifact jarArtifact
         }
     }
 }
