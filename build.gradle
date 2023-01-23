@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+}
+
+group 'com.blackcandletech'
+version '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.yaml:snakeyaml:1.33'
+}
+
+test {
+    useJUnitPlatform()
+}
