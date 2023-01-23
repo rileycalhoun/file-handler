@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'com.blackcandletech'
-version '1.0.0'
+version '1.0.1'
 
 repositories {
     mavenCentral()
@@ -11,8 +11,15 @@ repositories {
 
 dependencies {
     implementation 'org.yaml:snakeyaml:1.33'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
 }
 
 test {
     useJUnitPlatform()
+
+    maxHeapSize = '1G'
+
+    testLogging {
+        events "passed"
+    }
 }
