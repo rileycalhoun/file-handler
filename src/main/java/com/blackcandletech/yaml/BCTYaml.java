@@ -34,9 +34,8 @@ public class BCTYaml {
 
             // Write to file from resources folder
             InputStream resourceStream = BCTYaml.class.getClassLoader().getResourceAsStream(fileName);
-            OutputStream outputStream = null;
             try {
-                outputStream = new FileOutputStream(file);
+                OutputStream outputStream = new FileOutputStream(file);
                 if(resourceStream != null)
                     resourceStream.transferTo(outputStream);
             } catch (IOException e) {
