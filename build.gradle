@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.blackcandletech'
-version '1.1.1'
+version 'master-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -19,6 +19,16 @@ dependencies {
 compileJava {
     sourceCompatibility("17")
     targetCompatibility("17")
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.blackcandletech'
+            artifactId = 'yaml'
+            version = this.version
+        }
+    }
 }
 
 test {
