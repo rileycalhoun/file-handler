@@ -1,19 +1,20 @@
-package com.blackcandletech.yaml;
+package com.blackcandletech.filehandler;
 
 import java.util.*;
 
 @SuppressWarnings({"unchecked"})
-public class YamlSection {
+public class FileSection {
 
-    protected final Map<String, Object> rawData;
-    protected final Map<String, YamlSection> sections = new HashMap<>();
+    protected Map<String, Object> rawData;
+    protected final Map<String, FileSection> sections = new HashMap<>();
 
-    public YamlSection (Map<String, Object> rawData)
+    public FileSection(Map<String, Object> rawData)
     {
         this.rawData = rawData;
-        if(rawData.isEmpty()) return;
+        if(this.rawData == null) this.rawData = new HashMap<>();
+        if(this.rawData.isEmpty()) return;
 
-        Iterator<String> keys = rawData.keySet().iterator();
+        Iterator<String> keys = this.rawData.keySet().iterator();
         while(keys.hasNext())
         {
             String key = keys.next();
@@ -21,7 +22,7 @@ public class YamlSection {
             if(obj instanceof Map)
             {
                 Map<String, Object> section = (Map<String, Object>) obj;
-                this.sections.put(key, new YamlSection(section));
+                this.sections.put(key, new FileSection(section));
                 keys.remove();
             }
         }
@@ -38,7 +39,7 @@ public class YamlSection {
             String[] pathArray = path.split("\\.");
             String section = pathArray[0];
             String newPath = String.join(".", Arrays.copyOfRange(pathArray, 1, pathArray.length));
-            return getYamlSection(section).get(newPath);
+            return getSection(section).get(newPath);
         }
 
         return rawData.get(path);
@@ -74,18 +75,18 @@ public class YamlSection {
         return (ArrayList<String>) get(path);
     }
 
-    public YamlSection getYamlSection(String path)
+    public FileSection getSection(String path)
     {
-        YamlSection section = getYamlSections().get(path);
+        FileSection section = getSections().get(path);
         if(section == null) {
-            section = new YamlSection(new HashMap<>());
-            getYamlSections().put(path, section);
+            section = new FileSection(new HashMap<>());
+            getSections().put(path, section);
         }
 
         return section;
     }
 
-    public Map<String, YamlSection> getYamlSections()
+    public Map<String, FileSection> getSections()
     {
         return sections;
     }
@@ -98,7 +99,7 @@ public class YamlSection {
             String section = pathArray[0];
             String newPath = String.join(".", Arrays.copyOfRange(pathArray, 1, pathArray.length));
 
-            getYamlSection(section).set(newPath, obj);
+            getSection(section).set(newPath, obj);
             return;
         }
 
@@ -111,7 +112,7 @@ public class YamlSection {
         if(sections.isEmpty()) return data;
         for(String key : sections.keySet())
         {
-            YamlSection section = sections.get(key);
+            FileSection section = sections.get(key);
 
             Map<String, Object> sectionData = section.gatherData();
             data.put(key, sectionData);

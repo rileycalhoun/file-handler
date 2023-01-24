@@ -1,8 +1,8 @@
-package com.blackcandletech.yaml;
+package com.blackcandletech.filehandler;
 
 import java.nio.file.Path;
 
-public class YamlSettings {
+public class FileSettings {
 
     private static Path defaultDirectory = Path.of(System.getProperty("user.dir"));
     public static Path getDefaultDirectory() {
@@ -15,9 +15,11 @@ public class YamlSettings {
 
     private final boolean copyFromResources;
     private final Path directory;
+    private final FileType fileType;
 
-    private YamlSettings (Builder builder)
+    private FileSettings(Builder builder)
     {
+        this.fileType = builder.fileType;
         this.copyFromResources = builder.copyFromResources;
         this.directory = builder.directory;
     }
@@ -30,19 +32,20 @@ public class YamlSettings {
         return directory;
     }
 
+    public FileType getFileType()
+    {
+        return fileType;
+    }
+
     public static class Builder {
 
         private boolean copyFromResources = true;
-        private Path directory = YamlSettings.getDefaultDirectory();
+        private Path directory = FileSettings.getDefaultDirectory();
+        private FileType fileType;
 
-        public Builder (boolean copyFromResources)
+        public Builder (FileType fileType)
         {
-            this.copyFromResources = copyFromResources;
-        }
-
-        public Builder (String directory)
-        {
-            this.directory = Path.of(directory);
+            this.fileType = fileType;
         }
 
         public Builder setCopyResources(boolean copyFromResources) {
@@ -56,11 +59,16 @@ public class YamlSettings {
             return this;
         }
 
-        public YamlSettings build()
+        public FileSettings build()
         {
-            return new YamlSettings(this);
+            return new FileSettings(this);
         }
 
+    }
+
+    public enum FileType
+    {
+        YAML, JSON
     }
 
 }
