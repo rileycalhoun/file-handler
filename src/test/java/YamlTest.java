@@ -1,5 +1,6 @@
 import com.blackcandletech.yaml.BCTYaml;
 import com.blackcandletech.yaml.YamlFile;
+import com.blackcandletech.yaml.YamlSettings;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -8,7 +9,10 @@ public class YamlTest {
 
     @Test
     public void isYamlSavingProperly() {
-        YamlFile yamlFile = BCTYaml.getYamlFile("test", "yamltest", false);
+        YamlSettings settings = new YamlSettings.Builder(false)
+                .setPath("test").build();
+        YamlFile yamlFile = BCTYaml.getYamlFile("test", settings);
+        yamlFile.set("test.test.test.test.ok.ok.1.1.1.1", "1");
         yamlFile.saveYamlFile();
     }
 

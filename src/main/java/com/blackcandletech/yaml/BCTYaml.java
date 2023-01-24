@@ -18,110 +18,29 @@ public class BCTYaml {
         BCTYaml.directory = directory;
     }
 
-    public static YamlFile getYamlFile (String fileName) {
+    public static YamlFile getYamlFile(String fileName, YamlSettings yamlSettings) {
         if(!fileName.contains(".")) fileName = fileName + ".yml";
 
-        File file = new File(getDirectory(), fileName);
-
+        File file = new File(yamlSettings.getDirectory().toFile(), fileName);
         // Create files if they do not exist already
         if(!file.getParentFile().exists()) file.getParentFile().mkdirs();
-        if(!file.exists()) {
-            try {
+        if(!file.exists())
+        {
+            try
+            {
                 file.createNewFile();
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 e.printStackTrace();
             }
 
-            // Write to file from resources folder
-            InputStream resourceStream = BCTYaml.class.getClassLoader().getResourceAsStream(fileName);
-            try {
-                OutputStream outputStream = new FileOutputStream(file);
-                if(resourceStream != null)
-                    resourceStream.transferTo(outputStream);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        // Read from file and map
-        InputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        Yaml yaml = new Yaml();
-        Map<String, Object> rawData =
-                yaml.load(inputStream);
-        if(rawData == null) rawData = new HashMap<>();
-
-        return new YamlFile(file, rawData);
-    }
-
-    public static YamlFile getYamlFile (String directory, String fileName) {
-        if(!fileName.contains(".")) fileName = fileName + ".yml";
-
-        File file = new File(directory, fileName);
-
-        // Create files if they do not exist already
-        if(!file.getParentFile().exists()) file.getParentFile().mkdirs();
-        if(!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            // Write to file from resources folder
-            InputStream resourceStream = BCTYaml.class.getClassLoader().getResourceAsStream(fileName);
-            OutputStream outputStream = null;
-            try {
-                outputStream = new FileOutputStream(file);
-                if(resourceStream != null)
-                    resourceStream.transferTo(outputStream);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        // Read from file and map
-        InputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        Yaml yaml = new Yaml();
-        Map<String, Object> rawData =
-                yaml.load(inputStream);
-        if(rawData == null) rawData = new HashMap<>();
-
-        return new YamlFile(file, rawData);
-    }
-
-    public static YamlFile getYamlFile (String directory, String fileName, boolean copyResource) {
-        if(!fileName.contains(".")) fileName = fileName + ".yml";
-
-        File file = new File(directory, fileName);
-
-        // Create files if they do not exist already
-        if(!file.getParentFile().exists()) file.getParentFile().mkdirs();
-        if(!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            if(copyResource) {
+            if(yamlSettings.copyFromResources()) {
                 // Write to file from resources folder
                 InputStream resourceStream = BCTYaml.class.getClassLoader().getResourceAsStream(fileName);
-                OutputStream outputStream = null;
                 try {
-                    outputStream = new FileOutputStream(file);
-                    if(resourceStream != null)
+                    OutputStream outputStream = new FileOutputStream(file);
+                    if (resourceStream != null)
                         resourceStream.transferTo(outputStream);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -131,54 +50,12 @@ public class BCTYaml {
 
         // Read from file and map
         InputStream inputStream = null;
-        try {
+        try
+        {
             inputStream = new FileInputStream(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
-
-        Yaml yaml = new Yaml();
-        Map<String, Object> rawData =
-                yaml.load(inputStream);
-        if(rawData == null) rawData = new HashMap<>();
-
-        return new YamlFile(file, rawData);
-    }
-
-    public static YamlFile getYamlFile (String fileName, boolean copyResource) {
-        if(!fileName.contains(".")) fileName = fileName + ".yml";
-
-        File file = new File(getDirectory(), fileName);
-
-        // Create files if they do not exist already
-        if(!file.getParentFile().exists()) file.getParentFile().mkdirs();
-        if(!file.exists()) {
-
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            if(copyResource) {
-                // Write to file from resources folder
-                InputStream resourceStream = BCTYaml.class.getClassLoader().getResourceAsStream(fileName);
-                OutputStream outputStream = null;
-                try {
-                    outputStream = new FileOutputStream(file);
-                    if(resourceStream != null)
-                        resourceStream.transferTo(outputStream);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-
-        // Read from file and map
-        InputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream(file);
-        } catch (FileNotFoundException e) {
+        catch (FileNotFoundException e)
+        {
             e.printStackTrace();
         }
 

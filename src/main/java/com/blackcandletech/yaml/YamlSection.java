@@ -22,6 +22,7 @@ public class YamlSection {
             {
                 Map<String, Object> section = (Map<String, Object>) obj;
                 this.sections.put(key, new YamlSection(section));
+                this.rawData.remove(key);
             }
         }
     }
@@ -81,7 +82,7 @@ public class YamlSection {
             getYamlSections().put(path, section);
         }
 
-        return getYamlSections().get(path);
+        return section;
     }
 
     public Map<String, YamlSection> getYamlSections()
@@ -89,31 +90,34 @@ public class YamlSection {
         return sections;
     }
 
-    public void set(String path, Object obj) {
+    public void set(String path, Object obj)
+    {
         if(path.contains("."))
         {
             String[] pathArray = path.split("\\.");
             String section = pathArray[0];
-            String newPath = String.join(" ", Arrays.copyOfRange(pathArray, 1, pathArray.length));
+            String newPath = String.join(".", Arrays.copyOfRange(pathArray, 1, pathArray.length));
+
             getYamlSection(section).set(newPath, obj);
             return;
         }
 
-        if(this.getData().containsKey(path))
-            this.getData().replace(path, obj);
-        else
-            this.getData().put(path, obj);
+        this.getData().put(path, obj);
     }
 
-    protected Map<String, Object> gatherData() {
+    protected Map<String, Object> gatherData()
+    {
         Map<String, Object> data = new HashMap<>(Map.copyOf(rawData));
-        for(String key : sections.keySet()) {
+        if(sections.isEmpty()) return data;
+        for(String key : sections.keySet())
+        {
             YamlSection section = sections.get(key);
+
             Map<String, Object> sectionData = section.gatherData();
-            data.replace(key, sectionData);
+            data.put(key, sectionData);
         }
 
-        System.out.println(data);
         return data;
     }
+
 }
