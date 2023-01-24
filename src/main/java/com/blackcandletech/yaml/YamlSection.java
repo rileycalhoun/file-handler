@@ -1,9 +1,6 @@
 package com.blackcandletech.yaml;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings({"unchecked"})
 public class YamlSection {
@@ -15,14 +12,17 @@ public class YamlSection {
     {
         this.rawData = rawData;
         if(rawData.isEmpty()) return;
-        for(String key : rawData.keySet())
+
+        Iterator<String> keys = rawData.keySet().iterator();
+        while(keys.hasNext())
         {
+            String key = keys.next();
             Object obj = rawData.get(key);
             if(obj instanceof Map)
             {
                 Map<String, Object> section = (Map<String, Object>) obj;
                 this.sections.put(key, new YamlSection(section));
-                this.rawData.remove(key);
+                keys.remove();
             }
         }
     }

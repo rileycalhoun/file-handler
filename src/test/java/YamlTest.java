@@ -12,16 +12,26 @@ public class YamlTest {
         YamlSettings settings = new YamlSettings.Builder(false)
                 .setPath("test").build();
         YamlFile yamlFile = BCTYaml.getYamlFile("test", settings);
-        yamlFile.set("test.test.test.test.ok.ok.1.1.1.1", "1");
+        yamlFile.set("yaml.file.is.saving.properly", "yes");
         yamlFile.saveYamlFile();
+
+        YamlFile newFile = BCTYaml.getYamlFile("test", settings);
+        assert newFile.getString("yaml.file.is.saving.properly").equals("yes");
     }
 
     @Test
-    public void time() {
-        Instant start = Instant.now();
+    public void canYamlCopyFile() {
+        YamlSettings settings = new YamlSettings.Builder(true)
+                .setPath("test").build();
+        YamlFile yamlFile = BCTYaml.getYamlFile("copy", settings);
+        String test = yamlFile.getString("test");
+        assert test.equals("working");
+    }
+
+    @Test
+    public void runAllTests() {
+        canYamlCopyFile();
         isYamlSavingProperly();
-        Instant end = Instant.now();
-        System.out.println(end.compareTo(start));
     }
 
 }
