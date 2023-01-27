@@ -26,7 +26,7 @@ publishing {
     publications {
         maven(MavenPublication) {
             groupId = 'com.github.black-candle-technologies'
-            artifactId = 'yaml'
+            artifactId = 'file-handler'
             version = this.version
             from components.java
         }
