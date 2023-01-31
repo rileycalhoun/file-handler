@@ -4,7 +4,7 @@ plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
-group 'com.blackcandletech'
+group 'me.rileycalhoun'
 version '1.2.0'
 
 repositories {
@@ -25,9 +25,6 @@ compileJava {
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId = 'com.github.black-candle-technologies'
-            artifactId = 'file-handler'
-            version = this.version
             from components.java
         }
     }
