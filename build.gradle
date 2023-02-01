@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'me.rileycalhoun'
-version '1.2.1'
+version '1.2.0'
 
 repositories {
     mavenCentral()
@@ -14,13 +14,12 @@ repositories {
 dependencies {
     implementation 'org.yaml:snakeyaml:1.33'
     implementation 'com.google.code.gson:gson:2.10.1'
-    implementation 'org.jetbrains:annotations:20.1.0'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
 }
 
 compileJava {
-    sourceCompatibility("16")
-    targetCompatibility("16")
+    sourceCompatibility("17")
+    targetCompatibility("17")
 }
 
 publishing {
