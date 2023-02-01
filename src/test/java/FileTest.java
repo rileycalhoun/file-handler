@@ -1,5 +1,5 @@
 import com.blackcandletech.filehandler.FileHandler;
-import com.blackcandletech.filehandler.BCTFile;
+import com.blackcandletech.filehandler.MappedFile;
 import com.blackcandletech.filehandler.FileSettings;
 import org.junit.jupiter.api.Test;
 
@@ -9,11 +9,12 @@ public class FileTest {
     public void isYamlSavingProperly() {
         FileSettings settings = new FileSettings.Builder(FileSettings.FileType.YAML)
                 .setPath("test").build();
-        BCTFile yamlFile = FileHandler.getFile("test", settings);
+        MappedFile yamlFile = FileHandler.getFile("test", settings);
         yamlFile.set("yaml.file.is.saving.properly", "yes");
         yamlFile.saveFile();
 
-        BCTFile newFile = FileHandler.getFile("test", settings);
+        MappedFile newFile = FileHandler.getFile("test", settings);
+        assert newFile.getString("yaml.file.is.saving.properly") != null;
         assert newFile.getString("yaml.file.is.saving.properly").equals("yes");
     }
 
@@ -21,7 +22,7 @@ public class FileTest {
     public void canYamlCopyFile() {
         FileSettings settings = new FileSettings.Builder(FileSettings.FileType.YAML)
                 .setPath("test").build();
-        BCTFile yamlFile = FileHandler.getFile("copy", settings);
+        MappedFile yamlFile = FileHandler.getFile("copy", settings);
         String test = yamlFile.getString("test");
         assert test.equals("working");
     }
@@ -30,20 +31,20 @@ public class FileTest {
     public void isJsonSavingProperly() {
         FileSettings settings = new FileSettings.Builder(FileSettings.FileType.JSON)
                 .setPath("test").build();
-        BCTFile yamlFile = FileHandler.getFile("test", settings);
+        MappedFile yamlFile = FileHandler.getFile("test", settings);
         yamlFile.set("json.file.is.saving.properly", "yes");
         yamlFile.saveFile();
 
-        BCTFile newFile = FileHandler.getFile("test", settings);
+        MappedFile newFile = FileHandler.getFile("test", settings);
         assert newFile.getString("json.file.is.saving.properly").equals("yes");
     }
 
     @Test
     public void canJsonCopyFile() {
         FileSettings settings = new FileSettings.Builder(FileSettings.FileType.JSON)
-                .setPath("test").build();
-        BCTFile yamlFile = FileHandler.getFile("copy", settings);
-        String test = yamlFile.getString("test");
+                .setPath("test").setCopyResources(true).build();
+        MappedFile jsonFile = FileHandler.getFile("copy", settings);
+        String test = jsonFile.getString("test");
         assert test.equals("working");
     }
 

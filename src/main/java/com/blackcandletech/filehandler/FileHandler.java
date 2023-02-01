@@ -20,7 +20,7 @@ public class FileHandler {
         FileHandler.directory = directory;
     }
 
-    public static BCTFile getFile(String fileName, FileSettings fileSettings) {
+    public static MappedFile getFile(String fileName, FileSettings fileSettings) {
         if(!fileName.contains("."))
             switch(fileSettings.getFileType())
             {
@@ -89,7 +89,7 @@ public class FileHandler {
             rawData = gson.fromJson(builder.toString(), Map.class);
         }
 
-        return new BCTFile(file, rawData);
+        return new MappedFile(file, rawData);
     }
 
 }

@@ -8,22 +8,17 @@ import java.io.*;
 import java.util.Map;
 
 @SuppressWarnings({"unchecked"})
-public class BCTFile extends FileSection {
+public class MappedFile extends FileSection {
 
     public final File file;
 
-    public BCTFile(File file, Map<String, Object> rawData)
+    public MappedFile(File file, Map<String, Object> rawData)
     {
         super(rawData);
         this.file = file;
     }
 
     public void saveFile() {
-        for (String key : sections.keySet()) {
-            FileSection section = sections.get(key);
-            Map<String, Object> data = section.gatherData();
-            this.rawData.put(key, data);
-        }
 
         if (this.file.getName().endsWith(".yml"))
         {
@@ -34,7 +29,9 @@ public class BCTFile extends FileSection {
             Yaml yaml = new Yaml(options);
             try {
                 PrintWriter writer = new PrintWriter(file);
-                yaml.dump(rawData, writer);
+                Map<String, Object> data = gatherData();
+                System.out.println(data);
+                yaml.dump(data, writer);
                 writer.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -44,7 +41,7 @@ public class BCTFile extends FileSection {
             String jsonString = new GsonBuilder()
                     .setPrettyPrinting()
                     .create()
-                    .toJson(rawData);
+                    .toJson(gatherData());
 
             try {
                 PrintWriter writer = new PrintWriter(file);
